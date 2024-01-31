@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Extract frames</title>
+
+</head>
+
+<body>
+    <h1>Extracted frames</h1>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Video Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Duration</td>
+                    <td>
+                        {% if video_duration|divisibleby:60 %}
+                        {{ video_duration|divisibleby:60 }} minutes
+                        {% else %}
+                        {{ video_duration }} seconds
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>FPS</td>
+                    <td>{{ video_fps }}</td>
+                </tr>
+                <tr>
+                    <td>Dimensions</td>
+                    <td>{{ video_width }} x {{ video_height }}</td>
+                </tr>
+                <tr>
+                    <td>total frames</td>
+                    <td>{{ total_frames }}</td>
+                </tr>
+                <tr>
+                    <td>totalsize</td>
+                    <td>{{ total_size }}</td>
+                </tr>
+                <tr>
+                    <td>frame number</td>
+                    <td id="frame_number">{{ frame_number }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        .table-wrapper {
+            float: right;
+            width: 50%;
+        }
+
+        img {
+            float: left;
+            margin-right: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 50%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #b83333;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 50%;
+        }
+
+        .table-wrapper {
+            float: right;
+            width: 50%;
+        }
+    </style>
+    <div class="grid-container">
+        <div class="images">
+            <div class="row">
+                {% for frame, frame_number in frames %}
+                <div class="column">
+                    <img src="{{ frame }}" width="600" height="400">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="button">
+            <button type="button" onclick="plusSlides(-1)">Prev</button>
+            <button type="button" onclick="plusSlides(1)">Next</button>
+        </div>
+
+    </div>
+
+
+
+
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("column");
+            var frameNumber = document.getElementById("frame_number");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
+            frameNumber.innerHTML = slideIndex;
+        }
+    </script>
+</body>
+
+</html>
